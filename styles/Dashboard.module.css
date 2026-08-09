@@ -1,0 +1,32 @@
+.center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.muted {
+  color: var(--color-text-muted);
+  margin-bottom: 28px;
+}
+
+.infoCard {
+  max-width: 480px;
+  padding: 10px 28px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
