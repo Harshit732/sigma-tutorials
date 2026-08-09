@@ -41,6 +41,10 @@ Blueprint landing page, with registration and login backed by MongoDB.
 - `/login` — log in
 - `/dashboard` — protected page showing the logged-in user's stored info
 
+## Deployment
+
+Connected to Vercel via GitHub — every push to `main` auto-deploys to production.
+
 ## Environment variables (set these in Vercel too)
 
 - `MONGODB_URI` — MongoDB Atlas connection string
