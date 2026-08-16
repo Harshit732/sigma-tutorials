@@ -54,7 +54,7 @@ export default function Login() {
             Sigma Tutorials
           </div>
           <h1>Welcome back to the CLAT Blueprint.</h1>
-          <p>Log in to continue your Test Series, IGCSE, A-Level or SAT prep.</p>
+          <p>Log in to continue your 1:1 mentorship, mock deconstructions, and score audits.</p>
         </div>
 
         <div className={styles.formSide}>

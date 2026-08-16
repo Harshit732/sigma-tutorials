@@ -71,8 +71,8 @@ export default function Register() {
           </div>
           <h1>Start your journey with the CLAT Blueprint.</h1>
           <p>
-            Create an account to track your courses, test series, and
-            progress in one place.
+            Create an account to track your mentorship program, mock
+            schematics, and score progress in one place.
           </p>
         </div>
 

@@ -6,11 +6,10 @@ import styles from "@/styles/Navbar.module.css";
 
 const LINKS = [
   { href: "#home", label: "Home" },
-  { href: "#courses", label: "Course" },
-  { href: "#students", label: "Studens" },
-  { href: "#teachers", label: "Teacher" },
-  { href: "#about", label: "About" },
-  { href: "#contact", label: "Contact" },
+  { href: "#programs", label: "Programs" },
+  { href: "#methodology", label: "Methodology" },
+  { href: "#advantage", label: "Advantage" },
+  { href: "#admissions", label: "Admissions" },
 ];
 
 export default function Navbar() {

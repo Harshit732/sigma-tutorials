@@ -11,16 +11,22 @@ export default function ContactFooter() {
 
   return (
     <>
-      <section id="contact" className="section">
+      <section id="admissions" className="section">
         <div className={`container ${styles.grid}`}>
           <div>
-            <span className="eyebrow">Contacts</span>
-            <h2 className={styles.heading}>Let&apos;s Work Together</h2>
+            <span className="eyebrow">Admissions &amp; Contact</span>
+            <h2 className={styles.heading}>Ready to Break Your Score Plateau?</h2>
             <p className={styles.sub}>
-              Have a project in mind? Let&apos;s talk and turn your ideas into
-              reality.
+              Mentorship cohorts are strictly capped to ensure 1:1 quality.
+              Apply for the upcoming batch to secure your NLU trajectory.
             </p>
             <p className={styles.contactLine}>info@sigmatutorials.com</p>
+            <a
+              href="mailto:info@sigmatutorials.com?subject=Mentorship%20Application"
+              className={`btn btn-primary ${styles.applyBtn}`}
+            >
+              Apply for Mentorship
+            </a>
           </div>
 
           <form className={`card ${styles.form}`} onSubmit={handleSubmit}>
@@ -41,23 +47,24 @@ export default function ContactFooter() {
           <div>
             <div className={styles.footerBrand}>Sigma Tutorials</div>
             <p>
-              We build modern learning experiences that help students grow
-              and succeed academically.
+              We engineer 1:1 CLAT mentorship for aspirants targeting a top
+              NLU seat — not mass-market coaching.
             </p>
           </div>
 
           <div>
             <h4>Quick Links</h4>
             <a href="#home">Home</a>
-            <a href="#about">About Us</a>
-            <a href="#courses">Services</a>
+            <a href="#methodology">Methodology</a>
+            <a href="#advantage">Advantage</a>
           </div>
 
           <div>
-            <h4>Our Services</h4>
-            <span>Test Series</span>
-            <span>IGCSE &amp; A-Level</span>
-            <span>SAT Prep</span>
+            <h4>Our Programs</h4>
+            <span>The Master Blueprint</span>
+            <span>Structural Audit Pack</span>
+            <span>Strategy Retainer</span>
+            <span>10-Mock Schematics</span>
           </div>
 
           <div>
@@ -80,7 +87,7 @@ export default function ContactFooter() {
         </div>
 
         <div className={styles.bottomBar}>
-          © {new Date().getFullYear()} Sigma Tutorials. All rights reserved.
+          © {new Date().getFullYear()} Sigma Tutorials — The CLAT Blueprint. All rights reserved.
         </div>
       </footer>
     </>

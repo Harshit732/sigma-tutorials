@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Sigma Tutorials | The CLAT Blueprint</title>
+        <title>The CLAT Blueprint | Elite 1:1 CLAT Mentorship</title>
       </Head>
       <Navbar />
       <main>

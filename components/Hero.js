@@ -7,19 +7,21 @@ export default function Hero() {
         <div>
           <span className="eyebrow">Sigma Tutorials · The CLAT Blueprint</span>
           <h1 className={styles.heading}>
-            A better future starts
-            <br /> with good education.
+            The Most Elite 1:1 Mentorship
+            <br /> for CLAT Preparation.
           </h1>
           <p className={styles.sub}>
-            The Planner Education is a highly qualified academic tutorial
-            center preparing students for Test Series, IGCSE, A-Level and SAT.
+            Designed by an NLU alumnus. Master the exam through structured,
+            data-driven mock deconstructions and cross-examinations — not
+            crowded batch lectures. We audit your cognitive performance, fix
+            your score bottlenecks, and engineer your path to a top NLU.
           </p>
           <div className={styles.ctaRow}>
-            <a href="#courses" className="btn btn-primary">
-              Our Course
+            <a href="#programs" className="btn btn-primary">
+              View Programs
             </a>
-            <a href="#about" className="btn btn-outline">
-              Learn More
+            <a href="#methodology" className="btn btn-outline">
+              Our Methodology
             </a>
           </div>
         </div>

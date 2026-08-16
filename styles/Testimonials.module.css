@@ -14,6 +14,16 @@
   gap: 22px;
 }
 
+.singleWrap {
+  display: flex;
+  justify-content: center;
+}
+
+.singleCard {
+  max-width: 640px;
+  text-align: left;
+}
+
 .card {
   padding: 28px 24px;
 }

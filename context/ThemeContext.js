@@ -7,8 +7,9 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     const stored = typeof window !== "undefined" && localStorage.getItem("theme");
-    const initial = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    setTheme(initial);
+    // Day mode is the default regardless of system preference; only an explicit
+    // prior toggle (saved in localStorage) should switch this to dark on load.
+    setTheme(stored === "dark" ? "dark" : "light");
   }, []);
 
   useEffect(() => {

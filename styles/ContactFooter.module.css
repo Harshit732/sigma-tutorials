@@ -19,6 +19,11 @@
 .contactLine {
   font-weight: 700;
   color: var(--color-primary);
+  margin-bottom: 20px;
+}
+
+.applyBtn {
+  display: inline-flex;
 }
 
 .form {

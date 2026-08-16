@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta name="description" content="Sigma Tutorials - The CLAT Blueprint. A better future starts with good education." />
+        <meta name="description" content="The CLAT Blueprint by Sigma Tutorials — elite 1:1 CLAT mentorship and mock deconstruction, designed by an NLU alumnus. Application-only, capped cohorts." />
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <body>
