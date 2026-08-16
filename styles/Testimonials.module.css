@@ -60,6 +60,14 @@
   flex-shrink: 0;
 }
 
+.avatarPhoto {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .author div {
   display: flex;
   flex-direction: column;

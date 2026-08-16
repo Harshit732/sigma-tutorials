@@ -22,7 +22,7 @@ export default function Testimonials() {
               was worth it throughout my journey.
             </p>
             <div className={styles.author}>
-              <span className={styles.avatar}>B</span>
+              <img src="/images/testimonial.jpg" alt="" className={styles.avatarPhoto} />
               <div>
                 <strong>CLAT Blueprint Mentee</strong>
                 <span>1:1 Mentorship Program</span>

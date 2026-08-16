@@ -39,14 +39,6 @@ export default function About() {
             mentee receives direct, uncompromised access to high-level
             strategic guidance.
           </p>
-
-          <div className={styles.founder}>
-            <img src="/images/founder.jpg" alt="Founder of The CLAT Blueprint" />
-            <div>
-              <strong>Founder, The CLAT Blueprint</strong>
-              <span>NLU Alumnus &amp; Legal Consultant</span>
-            </div>
-          </div>
         </div>
 
         <div className={styles.diagram}>
