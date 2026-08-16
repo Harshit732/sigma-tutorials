@@ -16,14 +16,14 @@
   margin-top: 12px;
 }
 
-.carouselHead {
+.carouselRow {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-bottom: 16px;
+  align-items: center;
+  gap: 14px;
 }
 
 .navBtn {
+  flex-shrink: 0;
   width: 38px;
   height: 38px;
   border-radius: 50%;
@@ -46,11 +46,14 @@
 }
 
 .track {
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: stretch;
   gap: 22px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
   padding-bottom: 8px;
   scrollbar-width: none;
 }
@@ -62,7 +65,7 @@
 .slide {
   scroll-snap-align: start;
   flex: 0 0 85%;
-  min-height: 440px;
+  min-height: 480px;
   perspective: 1400px;
 }
 
@@ -75,7 +78,7 @@
 @media (min-width: 980px) {
   .slide {
     flex-basis: 31%;
-    min-height: 460px;
+    min-height: 500px;
   }
 }
 
@@ -146,6 +149,17 @@
   font-weight: 600;
   font-size: 0.9rem;
   margin-bottom: 10px;
+}
+
+.preview {
+  color: var(--color-text-muted);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .desc {

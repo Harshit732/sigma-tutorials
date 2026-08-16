@@ -166,55 +166,57 @@ export default function Courses() {
           </p>
         </div>
 
-        <div className={styles.carouselHead}>
+        <div className={styles.carouselRow}>
           <button className={styles.navBtn} onClick={handlePrev} aria-label="Previous program">
             ‹
           </button>
-          <button className={styles.navBtn} onClick={handleNext} aria-label="Next program">
-            ›
-          </button>
-        </div>
 
-        <div className={styles.track} ref={trackRef}>
-          {LOOPED.map((program, i) => (
-            <div key={`${program.title}-${i}`} ref={(el) => (cardRefs.current[i] = el)} className={styles.slide}>
-              <div className={`${styles.flipCard} ${flipped.has(i) ? styles.flipped : ""}`}>
-                <div
-                  className={`card ${styles.face} ${styles.front} ${program.featured ? styles.featured : ""}`}
-                  style={{ "--accent": program.accent }}
-                >
-                  <span className={styles.bar} />
-                  <span className={styles.badge}>{program.badge}</span>
-                  <span className={styles.tag}>{program.tag}</span>
-                  <h3>{program.title}</h3>
-                  <p className={styles.tagline}>{program.tagline}</p>
-                  <div className={styles.faceFooter}>
-                    <a href="#admissions" className="btn btn-primary">
-                      {program.button}
-                    </a>
-                    <button type="button" className={styles.readMore} onClick={() => toggleFlip(i)}>
-                      Read More →
-                    </button>
+          <div className={styles.track} ref={trackRef}>
+            {LOOPED.map((program, i) => (
+              <div key={`${program.title}-${i}`} ref={(el) => (cardRefs.current[i] = el)} className={styles.slide}>
+                <div className={`${styles.flipCard} ${flipped.has(i) ? styles.flipped : ""}`}>
+                  <div
+                    className={`card ${styles.face} ${styles.front} ${program.featured ? styles.featured : ""}`}
+                    style={{ "--accent": program.accent }}
+                  >
+                    <span className={styles.bar} />
+                    <span className={styles.badge}>{program.badge}</span>
+                    <span className={styles.tag}>{program.tag}</span>
+                    <h3>{program.title}</h3>
+                    <p className={styles.tagline}>{program.tagline}</p>
+                    <p className={styles.preview}>{program.desc}</p>
+                    <div className={styles.faceFooter}>
+                      <a href="#admissions" className="btn btn-primary">
+                        {program.button}
+                      </a>
+                      <button type="button" className={styles.readMore} onClick={() => toggleFlip(i)}>
+                        Read More →
+                      </button>
+                    </div>
                   </div>
-                </div>
 
-                <div className={`card ${styles.face} ${styles.back}`} style={{ "--accent": program.accent }}>
-                  <span className={styles.bar} />
-                  <h3>{program.title}</h3>
-                  <p className={styles.desc}>{program.desc}</p>
-                  <p className={styles.accentNote}>{program.accentNote}</p>
-                  <div className={styles.faceFooter}>
-                    <a href="#admissions" className="btn btn-primary">
-                      {program.button}
-                    </a>
-                    <button type="button" className={styles.readMore} onClick={() => toggleFlip(i)}>
-                      ← Back
-                    </button>
+                  <div className={`card ${styles.face} ${styles.back}`} style={{ "--accent": program.accent }}>
+                    <span className={styles.bar} />
+                    <h3>{program.title}</h3>
+                    <p className={styles.desc}>{program.desc}</p>
+                    <p className={styles.accentNote}>{program.accentNote}</p>
+                    <div className={styles.faceFooter}>
+                      <a href="#admissions" className="btn btn-primary">
+                        {program.button}
+                      </a>
+                      <button type="button" className={styles.readMore} onClick={() => toggleFlip(i)}>
+                        ← Back
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <button className={styles.navBtn} onClick={handleNext} aria-label="Next program">
+            ›
+          </button>
         </div>
 
         <div className={styles.dots}>
