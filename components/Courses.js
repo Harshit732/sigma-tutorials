@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import styles from "@/styles/Courses.module.css";
 
 const PROGRAMS = [
@@ -55,6 +56,56 @@ const PROGRAMS = [
 ];
 
 export default function Courses() {
+  const trackRef = useRef(null);
+  const cardRefs = useRef([]);
+  const [active, setActive] = useState(0);
+
+  function scrollToIndex(i) {
+    cardRefs.current[i]?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+  }
+
+  function handlePrev() {
+    const i = Math.max(active - 1, 0);
+    setActive(i);
+    scrollToIndex(i);
+  }
+
+  function handleNext() {
+    const i = Math.min(active + 1, PROGRAMS.length - 1);
+    setActive(i);
+    scrollToIndex(i);
+  }
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    let frame;
+
+    function onScroll() {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const { scrollLeft } = track;
+        let closest = 0;
+        let closestDist = Infinity;
+        cardRefs.current.forEach((el, i) => {
+          if (!el) return;
+          const dist = Math.abs(el.offsetLeft - scrollLeft);
+          if (dist < closestDist) {
+            closestDist = dist;
+            closest = i;
+          }
+        });
+        setActive(closest);
+      });
+    }
+
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      track.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
     <section id="programs" className="section">
       <div className="container">
@@ -68,11 +119,31 @@ export default function Courses() {
           </p>
         </div>
 
-        <div className={styles.grid}>
-          {PROGRAMS.map((program) => (
+        <div className={styles.carouselHead}>
+          <button
+            className={styles.navBtn}
+            onClick={handlePrev}
+            disabled={active === 0}
+            aria-label="Previous program"
+          >
+            ‹
+          </button>
+          <button
+            className={styles.navBtn}
+            onClick={handleNext}
+            disabled={active === PROGRAMS.length - 1}
+            aria-label="Next program"
+          >
+            ›
+          </button>
+        </div>
+
+        <div className={styles.track} ref={trackRef}>
+          {PROGRAMS.map((program, i) => (
             <div
               key={program.title}
-              className={`card ${styles.card} ${program.featured ? styles.featured : ""}`}
+              ref={(el) => (cardRefs.current[i] = el)}
+              className={`card ${styles.card} ${styles.slide} ${program.featured ? styles.featured : ""}`}
               style={{ "--accent": program.accent }}
             >
               <span className={styles.bar} />
@@ -86,6 +157,20 @@ export default function Courses() {
                 {program.button}
               </a>
             </div>
+          ))}
+        </div>
+
+        <div className={styles.dots}>
+          {PROGRAMS.map((program, i) => (
+            <button
+              key={program.title}
+              className={`${styles.dot} ${i === active ? styles.dotActive : ""}`}
+              onClick={() => {
+                setActive(i);
+                scrollToIndex(i);
+              }}
+              aria-label={`Go to ${program.title}`}
+            />
           ))}
         </div>
 

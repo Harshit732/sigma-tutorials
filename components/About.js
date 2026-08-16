@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import styles from "@/styles/About.module.css";
 
 const NODES = [
@@ -48,14 +49,20 @@ export default function About() {
             const radius = 165;
             const x = Math.cos(angle) * radius;
             const y = Math.sin(angle) * radius;
+            const deg = (angle * 180) / Math.PI;
             return (
-              <div
-                key={node}
-                className={styles.node}
-                style={{ transform: `translate(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px))` }}
-              >
-                {node}
-              </div>
+              <Fragment key={node}>
+                <span
+                  className={styles.branch}
+                  style={{ width: `${radius}px`, transform: `rotate(${deg}deg)` }}
+                />
+                <div
+                  className={styles.node}
+                  style={{ transform: `translate(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px))` }}
+                >
+                  {node}
+                </div>
+              </Fragment>
             );
           })}
         </div>
