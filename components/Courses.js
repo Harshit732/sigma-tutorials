@@ -67,6 +67,19 @@ export default function Courses() {
   const cardRefs = useRef([]);
   const settleTimer = useRef(null);
   const [fullIndex, setFullIndex] = useState(N);
+  const [flipped, setFlipped] = useState(() => new Set());
+
+  function toggleFlip(i) {
+    setFlipped((prev) => {
+      const next = new Set(prev);
+      if (next.has(i)) {
+        next.delete(i);
+      } else {
+        next.add(i);
+      }
+      return next;
+    });
+  }
 
   function jumpTo(index, smooth) {
     const el = cardRefs.current[index];
@@ -164,22 +177,42 @@ export default function Courses() {
 
         <div className={styles.track} ref={trackRef}>
           {LOOPED.map((program, i) => (
-            <div
-              key={`${program.title}-${i}`}
-              ref={(el) => (cardRefs.current[i] = el)}
-              className={`card ${styles.card} ${styles.slide} ${program.featured ? styles.featured : ""}`}
-              style={{ "--accent": program.accent }}
-            >
-              <span className={styles.bar} />
-              <span className={styles.badge}>{program.badge}</span>
-              <span className={styles.tag}>{program.tag}</span>
-              <h3>{program.title}</h3>
-              <p className={styles.tagline}>{program.tagline}</p>
-              <p className={styles.desc}>{program.desc}</p>
-              <p className={styles.accentNote}>{program.accentNote}</p>
-              <a href="#admissions" className={program.featured ? "btn btn-outline" : "btn btn-primary"}>
-                {program.button}
-              </a>
+            <div key={`${program.title}-${i}`} ref={(el) => (cardRefs.current[i] = el)} className={styles.slide}>
+              <div className={`${styles.flipCard} ${flipped.has(i) ? styles.flipped : ""}`}>
+                <div
+                  className={`card ${styles.face} ${styles.front} ${program.featured ? styles.featured : ""}`}
+                  style={{ "--accent": program.accent }}
+                >
+                  <span className={styles.bar} />
+                  <span className={styles.badge}>{program.badge}</span>
+                  <span className={styles.tag}>{program.tag}</span>
+                  <h3>{program.title}</h3>
+                  <p className={styles.tagline}>{program.tagline}</p>
+                  <div className={styles.faceFooter}>
+                    <a href="#admissions" className="btn btn-primary">
+                      {program.button}
+                    </a>
+                    <button type="button" className={styles.readMore} onClick={() => toggleFlip(i)}>
+                      Read More →
+                    </button>
+                  </div>
+                </div>
+
+                <div className={`card ${styles.face} ${styles.back}`} style={{ "--accent": program.accent }}>
+                  <span className={styles.bar} />
+                  <h3>{program.title}</h3>
+                  <p className={styles.desc}>{program.desc}</p>
+                  <p className={styles.accentNote}>{program.accentNote}</p>
+                  <div className={styles.faceFooter}>
+                    <a href="#admissions" className="btn btn-primary">
+                      {program.button}
+                    </a>
+                    <button type="button" className={styles.readMore} onClick={() => toggleFlip(i)}>
+                      ← Back
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
         </div>
