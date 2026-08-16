@@ -39,15 +39,10 @@
   transition: background var(--transition), transform var(--transition);
 }
 
-.navBtn:hover:not(:disabled) {
+.navBtn:hover {
   background: var(--color-primary);
   color: #fff;
   transform: translateY(-2px);
-}
-
-.navBtn:disabled {
-  opacity: 0.35;
-  cursor: default;
 }
 
 .track {

@@ -39,6 +39,59 @@
 .svg {
   width: 100%;
   max-width: 380px;
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .float {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: hero-float 4.5s ease-in-out infinite;
+  }
+
+  .shadow {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: hero-shadow 4.5s ease-in-out infinite;
+  }
+
+  .tassel {
+    transform-box: fill-box;
+    transform-origin: top center;
+    animation: hero-tassel 2.6s ease-in-out infinite;
+  }
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes hero-shadow {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.86);
+    opacity: 0.6;
+  }
+}
+
+@keyframes hero-tassel {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
 }
 
 @media (max-width: 860px) {

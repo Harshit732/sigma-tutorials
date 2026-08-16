@@ -55,35 +55,60 @@ const PROGRAMS = [
   },
 ];
 
+const N = PROGRAMS.length;
+// Render three consecutive copies of the deck so there's always a real card
+// to scroll to in either direction — the middle copy (indices N..2N-1) is
+// "home base"; landing in an outer copy triggers a silent, instant jump
+// back to the equivalent card in the middle copy so the loop feels seamless.
+const LOOPED = [...PROGRAMS, ...PROGRAMS, ...PROGRAMS];
+
 export default function Courses() {
   const trackRef = useRef(null);
   const cardRefs = useRef([]);
-  const [active, setActive] = useState(0);
+  const settleTimer = useRef(null);
+  const [fullIndex, setFullIndex] = useState(N);
 
-  function scrollToIndex(i) {
-    cardRefs.current[i]?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+  function jumpTo(index, smooth) {
+    const el = cardRefs.current[index];
+    if (!el || !trackRef.current) return;
+    if (smooth) {
+      el.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+    } else {
+      trackRef.current.scrollLeft = el.offsetLeft;
+    }
   }
 
   function handlePrev() {
-    const i = Math.max(active - 1, 0);
-    setActive(i);
-    scrollToIndex(i);
+    const next = fullIndex - 1;
+    setFullIndex(next);
+    jumpTo(next, true);
   }
 
   function handleNext() {
-    const i = Math.min(active + 1, PROGRAMS.length - 1);
-    setActive(i);
-    scrollToIndex(i);
+    const next = fullIndex + 1;
+    setFullIndex(next);
+    jumpTo(next, true);
   }
+
+  function goToProgram(i) {
+    const next = N + i;
+    setFullIndex(next);
+    jumpTo(next, true);
+  }
+
+  // Center the track on the middle copy on first mount, instantly.
+  useEffect(() => {
+    jumpTo(N, false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-    let frame;
 
     function onScroll() {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
+      clearTimeout(settleTimer.current);
+      settleTimer.current = setTimeout(() => {
         const { scrollLeft } = track;
         let closest = 0;
         let closestDist = Infinity;
@@ -95,16 +120,25 @@ export default function Courses() {
             closest = i;
           }
         });
-        setActive(closest);
-      });
+
+        if (closest < N || closest >= N * 2) {
+          const remapped = N + (((closest % N) + N) % N);
+          setFullIndex(remapped);
+          jumpTo(remapped, false);
+        } else {
+          setFullIndex(closest);
+        }
+      }, 120);
     }
 
     track.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       track.removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(frame);
+      clearTimeout(settleTimer.current);
     };
   }, []);
+
+  const active = ((fullIndex % N) + N) % N;
 
   return (
     <section id="programs" className="section">
@@ -120,28 +154,18 @@ export default function Courses() {
         </div>
 
         <div className={styles.carouselHead}>
-          <button
-            className={styles.navBtn}
-            onClick={handlePrev}
-            disabled={active === 0}
-            aria-label="Previous program"
-          >
+          <button className={styles.navBtn} onClick={handlePrev} aria-label="Previous program">
             ‹
           </button>
-          <button
-            className={styles.navBtn}
-            onClick={handleNext}
-            disabled={active === PROGRAMS.length - 1}
-            aria-label="Next program"
-          >
+          <button className={styles.navBtn} onClick={handleNext} aria-label="Next program">
             ›
           </button>
         </div>
 
         <div className={styles.track} ref={trackRef}>
-          {PROGRAMS.map((program, i) => (
+          {LOOPED.map((program, i) => (
             <div
-              key={program.title}
+              key={`${program.title}-${i}`}
               ref={(el) => (cardRefs.current[i] = el)}
               className={`card ${styles.card} ${styles.slide} ${program.featured ? styles.featured : ""}`}
               style={{ "--accent": program.accent }}
@@ -165,10 +189,7 @@ export default function Courses() {
             <button
               key={program.title}
               className={`${styles.dot} ${i === active ? styles.dotActive : ""}`}
-              onClick={() => {
-                setActive(i);
-                scrollToIndex(i);
-              }}
+              onClick={() => goToProgram(i)}
               aria-label={`Go to ${program.title}`}
             />
           ))}
