@@ -3,17 +3,37 @@ import styles from "@/styles/ContactFooter.module.css";
 
 export default function ContactFooter() {
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const data = new FormData(e.target);
-    const name = data.get("name");
-    const email = data.get("email");
-    const message = data.get("message");
-    const subject = `New inquiry from ${name}`;
-    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
-    window.location.href = `mailto:shubhendra.rajat102@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    setError("");
+    setSending(true);
+    const form = e.target;
+    const data = new FormData(form);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          email: data.get("email"),
+          message: data.get("message"),
+        }),
+      });
+      const result = await res.json();
+      if (!res.ok) {
+        setError(result.error || "Couldn't send your message. Please try again.");
+        return;
+      }
+      setSent(true);
+      form.reset();
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -37,13 +57,14 @@ export default function ContactFooter() {
           </div>
 
           <form className={`card ${styles.form}`} onSubmit={handleSubmit}>
+            {error && <div className={styles.formError}>{error}</div>}
             <div className={styles.row}>
               <input type="text" name="name" placeholder="Your Name" required />
               <input type="email" name="email" placeholder="Your Email" required />
             </div>
             <textarea name="message" placeholder="Your Message" rows={4} required />
-            <button type="submit" className="btn btn-primary btn-block">
-              {sent ? "Message Sent ✓" : "Send Message"}
+            <button type="submit" className="btn btn-primary btn-block" disabled={sending}>
+              {sending ? "Sending…" : sent ? "Message Sent ✓" : "Send Message"}
             </button>
           </form>
         </div>

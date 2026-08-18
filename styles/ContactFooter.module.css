@@ -57,6 +57,14 @@
   outline-offset: 1px;
 }
 
+.formError {
+  background: rgba(192, 57, 43, 0.1);
+  color: #c0392b;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+}
+
 .footer {
   background: var(--color-primary-dark);
   color: #eaf1fb;
