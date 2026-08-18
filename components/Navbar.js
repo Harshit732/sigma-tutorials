@@ -5,11 +5,11 @@ import { useAuth } from "@/context/AuthContext";
 import styles from "@/styles/Navbar.module.css";
 
 const LINKS = [
-  { href: "#home", label: "Home" },
-  { href: "#programs", label: "Programs" },
-  { href: "#methodology", label: "Methodology" },
-  { href: "#advantage", label: "Advantage" },
-  { href: "#admissions", label: "Admissions" },
+  { href: "/#home", label: "Home" },
+  { href: "/#programs", label: "Programs" },
+  { href: "/#methodology", label: "Methodology" },
+  { href: "/#advantage", label: "Advantage" },
+  { href: "/#admissions", label: "Admissions" },
 ];
 
 export default function Navbar() {
