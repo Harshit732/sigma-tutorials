@@ -28,6 +28,12 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: "Invalid email or password." });
     }
 
+    if (!user.approved) {
+      return res.status(403).json({
+        error: "Your registration is still pending admin approval. Please check back soon.",
+      });
+    }
+
     const token = signToken({ id: user._id.toString() });
     setAuthCookie(res, token);
 

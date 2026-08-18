@@ -1,9 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import styles from "@/styles/Auth.module.css";
-import { useAuth } from "@/context/AuthContext";
 
 const initialForm = {
   firstName: "",
@@ -16,11 +14,10 @@ const initialForm = {
 };
 
 export default function Register() {
-  const router = useRouter();
-  const { refresh } = useAuth();
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   function update(field) {
     return (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
@@ -49,8 +46,7 @@ export default function Register() {
         return;
       }
 
-      await refresh();
-      router.push("/dashboard");
+      setSubmitted(true);
     } catch {
       setError("Network error. Please try again.");
     } finally {
@@ -77,6 +73,19 @@ export default function Register() {
         </div>
 
         <div className={styles.formSide}>
+          {submitted ? (
+            <div className={`card ${styles.card}`}>
+              <h2>Registration submitted</h2>
+              <p className={styles.muted}>
+                Thanks, {form.firstName}! Your account is pending admin
+                approval. You&apos;ll be able to sign in with the password
+                you set once it&apos;s approved.
+              </p>
+              <Link href="/login" className="btn btn-primary btn-block">
+                Go to Login
+              </Link>
+            </div>
+          ) : (
           <form className={`card ${styles.card}`} onSubmit={handleSubmit}>
             <h2>Create your account</h2>
             <p className={styles.muted}>It only takes a minute.</p>
@@ -129,6 +138,7 @@ export default function Register() {
               Already have an account? <Link href="/login">Log in</Link>
             </p>
           </form>
+          )}
         </div>
       </div>
     </>

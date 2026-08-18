@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
-import { signToken, setAuthCookie } from "@/lib/auth";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[0-9+\-\s()]{7,20}$/;
@@ -41,27 +40,21 @@ export default async function handler(req, res) {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    const user = await User.create({
+    await User.create({
       firstName,
       lastName,
       email: email.toLowerCase(),
       phone,
       dob: dobDate,
       passwordHash,
+      approved: false,
     });
 
-    const token = signToken({ id: user._id.toString() });
-    setAuthCookie(res, token);
-
+    // No session is created here — registration is pending admin approval,
+    // so the account can't sign in yet.
     return res.status(201).json({
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phone: user.phone,
-        dob: user.dob,
-      },
+      pending: true,
+      message: "Registration submitted. You'll be able to sign in once an admin approves your account.",
     });
   } catch (err) {
     console.error("Register error:", err);

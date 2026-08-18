@@ -6,6 +6,13 @@ export default function ContactFooter() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    const data = new FormData(e.target);
+    const name = data.get("name");
+    const email = data.get("email");
+    const message = data.get("message");
+    const subject = `New inquiry from ${name}`;
+    const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+    window.location.href = `mailto:shubhendra.rajat102@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSent(true);
   }
 
@@ -31,10 +38,10 @@ export default function ContactFooter() {
 
           <form className={`card ${styles.form}`} onSubmit={handleSubmit}>
             <div className={styles.row}>
-              <input type="text" placeholder="Your Name" required />
-              <input type="email" placeholder="Your Email" required />
+              <input type="text" name="name" placeholder="Your Name" required />
+              <input type="email" name="email" placeholder="Your Email" required />
             </div>
-            <textarea placeholder="Your Message" rows={4} required />
+            <textarea name="message" placeholder="Your Message" rows={4} required />
             <button type="submit" className="btn btn-primary btn-block">
               {sent ? "Message Sent ✓" : "Send Message"}
             </button>

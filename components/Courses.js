@@ -66,19 +66,20 @@ export default function Courses() {
   const trackRef = useRef(null);
   const cardRefs = useRef([]);
   const settleTimer = useRef(null);
-  const [fullIndex, setFullIndex] = useState(N);
+  const fullIndexRef = useRef(N);
   const [flipped, setFlipped] = useState(() => new Set());
 
   const pointerStart = useRef(null);
 
-  function toggleFlip(i) {
+  function openFlip(i) {
+    setFlipped((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
+  }
+
+  function closeFlip(i) {
     setFlipped((prev) => {
+      if (!prev.has(i)) return prev;
       const next = new Set(prev);
-      if (next.has(i)) {
-        next.delete(i);
-      } else {
-        next.add(i);
-      }
+      next.delete(i);
       return next;
     });
   }
@@ -89,15 +90,17 @@ export default function Courses() {
 
   // Ignore the click if it ended a swipe/drag across the card (the pointer
   // moved meaningfully between down and up) so browsing the carousel never
-  // accidentally flips a card.
-  function handleFlipClick(i, e) {
+  // accidentally flips a card — only a genuine tap on Read More/Back does.
+  function handleFlipClick(i, e, action) {
     const start = pointerStart.current;
+    pointerStart.current = null;
     if (start) {
       const dx = Math.abs(e.clientX - start.x);
       const dy = Math.abs(e.clientY - start.y);
       if (dx > 8 || dy > 8) return;
     }
-    toggleFlip(i);
+    if (action === "open") openFlip(i);
+    else closeFlip(i);
   }
 
   function jumpTo(index, smooth) {
@@ -110,21 +113,32 @@ export default function Courses() {
     }
   }
 
+  // If we're currently sitting in an outer (buffer) copy of the deck,
+  // silently re-park on the equivalent card in the middle copy first —
+  // instantly, with no animation, so it's imperceptible since the content
+  // is identical. Doing this BEFORE animating the next step (rather than
+  // after, reactively) means looping past either end only ever continues
+  // smoothly forward/backward and never visibly snaps back.
+  function ensureSafeZone() {
+    const index = fullIndexRef.current;
+    if (index < N || index >= N * 2) {
+      const safe = N + (((index % N) + N) % N);
+      jumpTo(safe, false);
+      fullIndexRef.current = safe;
+    }
+  }
+
   function handlePrev() {
-    const next = fullIndex - 1;
-    setFullIndex(next);
+    ensureSafeZone();
+    const next = fullIndexRef.current - 1;
+    fullIndexRef.current = next;
     jumpTo(next, true);
   }
 
   function handleNext() {
-    const next = fullIndex + 1;
-    setFullIndex(next);
-    jumpTo(next, true);
-  }
-
-  function goToProgram(i) {
-    const next = N + i;
-    setFullIndex(next);
+    ensureSafeZone();
+    const next = fullIndexRef.current + 1;
+    fullIndexRef.current = next;
     jumpTo(next, true);
   }
 
@@ -134,6 +148,9 @@ export default function Courses() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Safety net for natural swipe/drag scrolling (not button-driven): once
+  // the user stops scrolling, snap back into the safe middle-copy zone if
+  // they dragged into an outer buffer copy.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -153,12 +170,9 @@ export default function Courses() {
           }
         });
 
+        fullIndexRef.current = closest;
         if (closest < N || closest >= N * 2) {
-          const remapped = N + (((closest % N) + N) % N);
-          setFullIndex(remapped);
-          jumpTo(remapped, false);
-        } else {
-          setFullIndex(closest);
+          ensureSafeZone();
         }
       }, 120);
     }
@@ -168,9 +182,8 @@ export default function Courses() {
       track.removeEventListener("scroll", onScroll);
       clearTimeout(settleTimer.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const active = ((fullIndex % N) + N) % N;
 
   return (
     <section id="programs" className="section">
@@ -208,7 +221,7 @@ export default function Courses() {
                       type="button"
                       className={styles.readMore}
                       onPointerDown={handleFlipPointerDown}
-                      onClick={(e) => handleFlipClick(i, e)}
+                      onClick={(e) => handleFlipClick(i, e, "open")}
                     >
                       Read More →
                     </button>
@@ -232,7 +245,7 @@ export default function Courses() {
                         type="button"
                         className={styles.readMore}
                         onPointerDown={handleFlipPointerDown}
-                        onClick={(e) => handleFlipClick(i, e)}
+                        onClick={(e) => handleFlipClick(i, e, "close")}
                       >
                         ← Back
                       </button>
@@ -246,17 +259,6 @@ export default function Courses() {
           <button className={styles.navBtn} onClick={handleNext} aria-label="Next program">
             ›
           </button>
-        </div>
-
-        <div className={styles.dots}>
-          {PROGRAMS.map((program, i) => (
-            <button
-              key={program.title}
-              className={`${styles.dot} ${i === active ? styles.dotActive : ""}`}
-              onClick={() => goToProgram(i)}
-              aria-label={`Go to ${program.title}`}
-            />
-          ))}
         </div>
 
         <div className={styles.moreRow}>

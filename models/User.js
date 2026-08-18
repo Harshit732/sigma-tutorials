@@ -14,6 +14,9 @@ const UserSchema = new mongoose.Schema(
     phone: { type: String, required: true, trim: true },
     dob: { type: Date, required: true },
     passwordHash: { type: String, required: true },
+    approved: { type: Boolean, default: false },
+    profilePicture: { type: String, default: "" },
+    feedback: { type: String, default: "" },
   },
   { timestamps: true }
 );
