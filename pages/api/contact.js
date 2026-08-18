@@ -28,7 +28,11 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         from: "Sigma Tutorials Contact Form <onboarding@resend.dev>",
-        to: ["shubhendra.rajat102@gmail.com"],
+        // TODO: switch back to shubhendra.rajat102@gmail.com once Resend is
+        // set up under that address (or a verified sending domain is added) —
+        // the current Resend account is in test mode and can only deliver to
+        // its own owner's address.
+        to: ["harshit.sri732@gmail.com"],
         reply_to: email,
         subject: `New inquiry from ${name}`,
         text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
