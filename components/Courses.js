@@ -69,6 +69,8 @@ export default function Courses() {
   const [fullIndex, setFullIndex] = useState(N);
   const [flipped, setFlipped] = useState(() => new Set());
 
+  const pointerStart = useRef(null);
+
   function toggleFlip(i) {
     setFlipped((prev) => {
       const next = new Set(prev);
@@ -79,6 +81,23 @@ export default function Courses() {
       }
       return next;
     });
+  }
+
+  function handleFlipPointerDown(e) {
+    pointerStart.current = { x: e.clientX, y: e.clientY };
+  }
+
+  // Ignore the click if it ended a swipe/drag across the card (the pointer
+  // moved meaningfully between down and up) so browsing the carousel never
+  // accidentally flips a card.
+  function handleFlipClick(i, e) {
+    const start = pointerStart.current;
+    if (start) {
+      const dx = Math.abs(e.clientX - start.x);
+      const dy = Math.abs(e.clientY - start.y);
+      if (dx > 8 || dy > 8) return;
+    }
+    toggleFlip(i);
   }
 
   function jumpTo(index, smooth) {
@@ -185,13 +204,18 @@ export default function Courses() {
                     <h3>{program.title}</h3>
                     <p className={styles.tagline}>{program.tagline}</p>
                     <p className={styles.preview}>{program.desc}</p>
+                    <button
+                      type="button"
+                      className={styles.readMore}
+                      onPointerDown={handleFlipPointerDown}
+                      onClick={(e) => handleFlipClick(i, e)}
+                    >
+                      Read More →
+                    </button>
                     <div className={styles.faceFooter}>
                       <a href="#admissions" className="btn btn-primary">
                         {program.button}
                       </a>
-                      <button type="button" className={styles.readMore} onClick={() => toggleFlip(i)}>
-                        Read More →
-                      </button>
                     </div>
                   </div>
 
@@ -204,7 +228,12 @@ export default function Courses() {
                       <a href="#admissions" className="btn btn-primary">
                         {program.button}
                       </a>
-                      <button type="button" className={styles.readMore} onClick={() => toggleFlip(i)}>
+                      <button
+                        type="button"
+                        className={styles.readMore}
+                        onPointerDown={handleFlipPointerDown}
+                        onClick={(e) => handleFlipClick(i, e)}
+                      >
                         ← Back
                       </button>
                     </div>

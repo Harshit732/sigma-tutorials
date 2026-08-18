@@ -20,8 +20,29 @@ export default function Navbar() {
   async function handleLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
     setUser(null);
+    setOpen(false);
     window.location.href = "/";
   }
+
+  const authButtons = user ? (
+    <>
+      <Link href="/dashboard" className="btn btn-outline" onClick={() => setOpen(false)}>
+        {user.firstName}
+      </Link>
+      <button className="btn btn-primary" onClick={handleLogout}>
+        Logout
+      </button>
+    </>
+  ) : (
+    <>
+      <Link href="/login" className="btn btn-outline" onClick={() => setOpen(false)}>
+        Login
+      </Link>
+      <Link href="/register" className="btn btn-primary" onClick={() => setOpen(false)}>
+        Register
+      </Link>
+    </>
+  );
 
   return (
     <header className={styles.header}>
@@ -40,6 +61,7 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          <div className={styles.mobileAuth}>{authButtons}</div>
         </nav>
 
         <div className={styles.actions}>
@@ -52,25 +74,7 @@ export default function Navbar() {
             {theme === "light" ? "🌙" : "☀️"}
           </button>
 
-          {user ? (
-            <>
-              <Link href="/dashboard" className="btn btn-outline">
-                {user.firstName}
-              </Link>
-              <button className="btn btn-primary" onClick={handleLogout}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link href="/login" className="btn btn-outline">
-                Login
-              </Link>
-              <Link href="/register" className="btn btn-primary">
-                Register
-              </Link>
-            </>
-          )}
+          <div className={styles.desktopAuth}>{authButtons}</div>
 
           <button
             className={styles.burger}

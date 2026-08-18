@@ -54,8 +54,7 @@
 
 .node {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  transform: translate(-50%, -50%);
   width: 108px;
   padding: 10px 6px;
   text-align: center;
@@ -65,7 +64,7 @@
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition), background var(--transition);
+  transition: background var(--transition);
   z-index: 1;
 }
 
@@ -76,5 +75,19 @@
 
   .diagram {
     margin-top: 20px;
+  }
+}
+
+@media (max-width: 420px) {
+  .center {
+    width: 96px;
+    height: 96px;
+    font-size: 0.9rem;
+  }
+
+  .node {
+    width: 86px;
+    font-size: 0.68rem;
+    padding: 7px 5px;
   }
 }

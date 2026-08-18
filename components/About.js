@@ -46,19 +46,22 @@ export default function About() {
           <div className={styles.center}>THE BLUEPRINT</div>
           {NODES.map((node, i) => {
             const angle = (i / NODES.length) * 2 * Math.PI;
-            const radius = 165;
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius;
+            // Percentages of the (square) diagram container, so the layout
+            // scales down safely on narrow phones instead of overflowing —
+            // a fixed pixel radius doesn't shrink with the container.
+            const radiusPct = 36;
+            const xPct = Math.cos(angle) * radiusPct;
+            const yPct = Math.sin(angle) * radiusPct;
             const deg = (angle * 180) / Math.PI;
             return (
               <Fragment key={node}>
                 <span
                   className={styles.branch}
-                  style={{ width: `${radius}px`, transform: `rotate(${deg}deg)` }}
+                  style={{ width: `${radiusPct}%`, transform: `rotate(${deg}deg)` }}
                 />
                 <div
                   className={styles.node}
-                  style={{ transform: `translate(calc(-50% + ${x.toFixed(1)}px), calc(-50% + ${y.toFixed(1)}px))` }}
+                  style={{ left: `${(50 + xPct).toFixed(2)}%`, top: `${(50 + yPct).toFixed(2)}%` }}
                 >
                   {node}
                 </div>

@@ -10,18 +10,10 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 22px;
-}
-
-.singleWrap {
-  display: flex;
-  justify-content: center;
-}
-
-.singleCard {
-  max-width: 640px;
-  text-align: left;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .card {
@@ -45,19 +37,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  flex-shrink: 0;
 }
 
 .avatarPhoto {
