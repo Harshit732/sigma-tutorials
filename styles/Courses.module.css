@@ -109,6 +109,19 @@
   transform: rotateY(180deg);
 }
 
+/* The global .card:hover lift (translateY) has higher specificity than
+   .back's plain rotateY(180deg) once :hover is added, so hovering a
+   flipped card's visible back face was overriding its rotation and
+   snapping it to look un-flipped. Pin both faces' hover state so only
+   the Read More / Back buttons ever change the flip, never a hover. */
+.flipCard .face:hover {
+  transform: none;
+}
+
+.flipCard .back:hover {
+  transform: rotateY(180deg);
+}
+
 .bar {
   position: absolute;
   top: 0;
