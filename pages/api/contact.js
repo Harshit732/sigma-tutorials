@@ -27,12 +27,13 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Sigma Tutorials Contact Form <onboarding@resend.dev>",
-        // TODO: switch back to shubhendra.rajat102@gmail.com once Resend is
-        // set up under that address (or a verified sending domain is added) —
-        // the current Resend account is in test mode and can only deliver to
-        // its own owner's address.
-        to: ["harshit.sri732@gmail.com"],
+        // onboarding@resend.dev is Resend's shared sender, which works without
+        // verifying a domain. The trade-off is that an unverified Resend
+        // account can only deliver to its own owner's address, so `to` below
+        // must stay the address the Resend account was registered with until
+        // a custom sending domain is verified.
+        from: "The CLAT Blueprint Contact Form <onboarding@resend.dev>",
+        to: ["theclatblueprint@gmail.com"],
         reply_to: email,
         subject: `New inquiry from ${name}`,
         text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
