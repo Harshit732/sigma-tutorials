@@ -20,10 +20,16 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  /* Deliberately outside .container (see Courses.js) so the cards can use
-     the full viewport width instead of losing space to the site's usual
-     24px side margins — just enough gutter here to keep the arrows and
-     card edges off the literal screen edge. */
+  /* Deliberately outside .container (see Courses.js) so cards can use the
+     full viewport width on mobile instead of losing space to the site's
+     usual 24px side margins. Matching .container's max-width + centering
+     here (with a smaller gutter) keeps that mobile full-bleed behavior
+     while still lining up with every other section once the viewport is
+     wide enough to hit the cap — otherwise the carousel would keep
+     stretching past 1160px while the rest of the page stays contained.
+     Below the cap this max-width simply has no effect. */
+  max-width: 1160px;
+  margin: 0 auto;
   padding: 0 10px;
 }
 
@@ -174,10 +180,6 @@
   font-size: 0.86rem;
   line-height: 1.5;
   margin-bottom: 10px;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .desc {

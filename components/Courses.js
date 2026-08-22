@@ -55,6 +55,12 @@ const PROGRAMS = [
   },
 ];
 
+function truncateWords(text, wordCount) {
+  const words = text.trim().split(/\s+/);
+  if (words.length <= wordCount) return text;
+  return `${words.slice(0, wordCount).join(" ")}…`;
+}
+
 const N = PROGRAMS.length;
 // Render three consecutive copies of the deck so there's always a real card
 // to scroll to in either direction — the middle copy (indices N..2N-1) is
@@ -217,7 +223,7 @@ export default function Courses() {
                     <span className={styles.tag}>{program.tag}</span>
                     <h3>{program.title}</h3>
                     <p className={styles.tagline}>{program.tagline}</p>
-                    <p className={styles.preview}>{program.desc}</p>
+                    <p className={styles.preview}>{truncateWords(program.desc, 10)}</p>
                     <button
                       type="button"
                       className={styles.readMore}
