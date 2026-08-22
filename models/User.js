@@ -3,7 +3,10 @@ import mongoose from "mongoose";
 const UserSchema = new mongoose.Schema(
   {
     firstName: { type: String, required: true, trim: true },
-    lastName: { type: String, required: true, trim: true },
+    // Not required: Google accounts with a single custom display name (e.g.
+    // a business account) don't have a separate family_name claim, so this
+    // can legitimately arrive blank from Google sign-up.
+    lastName: { type: String, default: "", trim: true },
     email: {
       type: String,
       required: true,

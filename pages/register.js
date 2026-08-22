@@ -68,7 +68,7 @@ export default function Register() {
     try {
       const endpoint = googlePending ? "/api/auth/register-google" : "/api/auth/register";
       const body = googlePending
-        ? { phone: `+91${form.phone}`, dob: form.dob }
+        ? { firstName: form.firstName, lastName: form.lastName, phone: `+91${form.phone}`, dob: form.dob }
         : { ...form, phone: `+91${form.phone}` };
 
       const res = await fetch(endpoint, {
@@ -149,19 +149,11 @@ export default function Register() {
             <div className={styles.row2}>
               <div className={styles.field}>
                 <label htmlFor="firstName">First Name</label>
-                {googlePending ? (
-                  <p className={styles.readOnlyField}>{form.firstName}</p>
-                ) : (
-                  <input id="firstName" required value={form.firstName} onChange={update("firstName")} />
-                )}
+                <input id="firstName" required value={form.firstName} onChange={update("firstName")} />
               </div>
               <div className={styles.field}>
                 <label htmlFor="lastName">Last Name</label>
-                {googlePending ? (
-                  <p className={styles.readOnlyField}>{form.lastName}</p>
-                ) : (
-                  <input id="lastName" required value={form.lastName} onChange={update("lastName")} />
-                )}
+                <input id="lastName" required value={form.lastName} onChange={update("lastName")} />
               </div>
             </div>
 

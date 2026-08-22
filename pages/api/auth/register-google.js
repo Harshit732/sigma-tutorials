@@ -16,7 +16,12 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Your Google sign-in session expired. Please try again." });
   }
 
-  const { phone, dob } = req.body || {};
+  const { firstName, lastName, phone, dob } = req.body || {};
+  const trimmedFirst = String(firstName || "").trim();
+  const trimmedLast = String(lastName || "").trim();
+  if (!trimmedFirst || !trimmedLast) {
+    return res.status(400).json({ error: "First and last name are required." });
+  }
   if (!phone || !dob) {
     return res.status(400).json({ error: "Phone number and date of birth are required." });
   }
@@ -36,9 +41,14 @@ export default async function handler(req, res) {
       return res.status(409).json({ error: "An account with this email already exists." });
     }
 
+    // firstName/lastName come from the form (like the password-registration
+    // flow) rather than the pending cookie — Google's OAuth verification
+    // only actually attests to the email, not the name, so there's no
+    // security reason to lock these, and locking them is exactly what
+    // caused a hard failure for accounts with no family_name claim.
     await User.create({
-      firstName: pending.firstName,
-      lastName: pending.lastName,
+      firstName: trimmedFirst,
+      lastName: trimmedLast,
       email: pending.email,
       phone,
       dob: dobDate,
