@@ -16,6 +16,12 @@
   line-height: 1.6;
 }
 
+.diagramWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .diagram {
   position: relative;
   width: 100%;
@@ -60,12 +66,61 @@
   text-align: center;
   font-size: 0.78rem;
   font-weight: 600;
+  font-family: inherit;
   border-radius: 50%;
   background: var(--color-surface);
+  color: var(--color-text);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
-  transition: background var(--transition);
+  transition: background var(--transition), color var(--transition), transform var(--transition), box-shadow var(--transition), border-color var(--transition);
   z-index: 1;
+  cursor: pointer;
+  appearance: none;
+}
+
+.node:hover {
+  border-color: var(--color-accent);
+  transform: translate(-50%, -50%) scale(1.06);
+  box-shadow: var(--shadow-md);
+}
+
+.node:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.nodeActive {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.detail {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-sm);
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 108px;
+}
+
+.detail strong {
+  display: block;
+  color: var(--color-primary);
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.detail p {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin: 0;
 }
 
 @media (max-width: 860px) {
@@ -73,7 +128,7 @@
     grid-template-columns: 1fr;
   }
 
-  .diagram {
+  .diagramWrap {
     margin-top: 20px;
   }
 }
