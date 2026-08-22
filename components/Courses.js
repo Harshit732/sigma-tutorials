@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import Reveal from "@/components/Reveal";
 import styles from "@/styles/Courses.module.css";
 
 const PROGRAMS = [
@@ -189,7 +188,7 @@ export default function Courses() {
   return (
     <section id="programs" className="section">
       <div className="container">
-        <Reveal className={styles.heading}>
+        <div className={styles.heading}>
           <span className="eyebrow">Programs &amp; Modules</span>
           <h2>Engineered for Every Stage of Your Preparation.</h2>
           <p className={styles.headingSub}>
@@ -197,7 +196,7 @@ export default function Courses() {
             deconstruction sessions — choose the exact pathway to your target
             NLU.
           </p>
-        </Reveal>
+        </div>
       </div>
 
       <div className={styles.carouselRow}>
