@@ -2,76 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Navbar from "@/components/Navbar";
+import PackageTracker from "@/components/PackageTracker";
+import OmrUpload from "@/components/OmrUpload";
+import MockChecklist from "@/components/MockChecklist";
 import { useAuth } from "@/context/AuthContext";
+import { resizeImageToDataUrl } from "@/lib/imageCompression";
 import styles from "@/styles/Dashboard.module.css";
-
-const START_DIMENSION = 640;
-const MIN_DIMENSION = 200;
-const TARGET_BYTES = 250 * 1024; // 250KB
-
-// Decoded byte size of a base64 data URL, without actually decoding it.
-function dataUrlByteSize(dataUrl) {
-  const base64 = dataUrl.slice(dataUrl.indexOf(",") + 1);
-  const padding = base64.endsWith("==") ? 2 : base64.endsWith("=") ? 1 : 0;
-  return Math.floor(base64.length * 0.75) - padding;
-}
-
-function drawAtCap(img, cap) {
-  let width = img.width;
-  let height = img.height;
-  if (width > height && width > cap) {
-    height = Math.round((height * cap) / width);
-    width = cap;
-  } else if (height > cap) {
-    width = Math.round((width * cap) / height);
-    height = cap;
-  }
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  canvas.getContext("2d").drawImage(img, 0, 0, width, height);
-  return canvas;
-}
-
-// Step quality down first; if even the lowest quality is still over budget
-// at this size, shrink the dimensions and try the quality ladder again.
-// Keeps every upload under ~250KB regardless of the source photo.
-function compressUnderTarget(img) {
-  let cap = START_DIMENSION;
-  let best = null;
-
-  while (true) {
-    const canvas = drawAtCap(img, cap);
-    let quality = 0.85;
-    let dataUrl = canvas.toDataURL("image/jpeg", quality);
-    let size = dataUrlByteSize(dataUrl);
-
-    while (size > TARGET_BYTES && quality > 0.35) {
-      quality -= 0.1;
-      dataUrl = canvas.toDataURL("image/jpeg", quality);
-      size = dataUrlByteSize(dataUrl);
-    }
-
-    if (!best || size < dataUrlByteSize(best)) best = dataUrl;
-    if (size <= TARGET_BYTES || cap <= MIN_DIMENSION) return best;
-
-    cap = Math.max(MIN_DIMENSION, Math.round(cap * 0.75));
-  }
-}
-
-function resizeImageToDataUrl(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = reject;
-    reader.onload = () => {
-      const img = new Image();
-      img.onerror = reject;
-      img.onload = () => resolve(compressUnderTarget(img));
-      img.src = reader.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
 
 export default function Dashboard() {
   const { user, loading, refresh } = useAuth();
@@ -79,6 +15,9 @@ export default function Dashboard() {
   const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
+
+  const [view, setView] = useState("overview"); // "overview" | "upload" | "checklist"
+  const [activeMock, setActiveMock] = useState(null);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -112,11 +51,40 @@ export default function Dashboard() {
     }
   }
 
+  function handleSelectMock(mockNumber) {
+    const mock = user.mocks.find((m) => m.number === mockNumber);
+    if (!mock) return;
+    setActiveMock(mockNumber);
+    setView(mock.status === "pending" ? "upload" : "checklist");
+  }
+
+  function backToOverview() {
+    setView("overview");
+    setActiveMock(null);
+  }
+
   if (loading || !user) {
     return (
       <div className={styles.center}>
         <p>Loading…</p>
       </div>
+    );
+  }
+
+  if (view === "upload") {
+    return (
+      <OmrUpload
+        mockNumber={activeMock}
+        refresh={refresh}
+        onUploaded={() => setView("checklist")}
+        onCancel={backToOverview}
+      />
+    );
+  }
+
+  if (view === "checklist") {
+    return (
+      <MockChecklist mockNumber={activeMock} refresh={refresh} onDone={backToOverview} onCancel={backToOverview} />
     );
   }
 
@@ -174,6 +142,8 @@ export default function Dashboard() {
           <Row label="Phone Number" value={user.phone} />
           <Row label="Date of Birth" value={dob} />
         </div>
+
+        <PackageTracker user={user} onSelectMock={handleSelectMock} />
 
         {user.feedback && (
           <div className={`card ${styles.feedbackCard}`}>

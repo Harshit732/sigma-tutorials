@@ -1,0 +1,177 @@
+.stickyHeader {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  padding: 16px 0;
+}
+
+.backLink {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 10px;
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: inherit;
+  display: block;
+}
+
+.headRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.counter {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.tabRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.tabBtn {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tabActive {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.codeCounts {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.codeCount {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--code-color);
+}
+
+.error {
+  background: rgba(192, 57, 43, 0.1);
+  color: #c0392b;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  margin-bottom: 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 10px;
+  margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cell {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 12px 16px;
+  }
+}
+
+.cellWrap {
+  position: relative;
+}
+
+.cell {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 4px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-border);
+  background: var(--color-bg);
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.cellQ {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.cellLabel {
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.popover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.popoverOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--opt-color);
+  cursor: pointer;
+}
+
+.popoverOption:hover {
+  background: var(--color-bg-alt);
+}
