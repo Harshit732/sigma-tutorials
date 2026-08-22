@@ -23,6 +23,10 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: "Invalid email or password." });
     }
 
+    if (!user.passwordHash) {
+      return res.status(401).json({ error: "This account uses Google Sign-In. Please continue with Google." });
+    }
+
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) {
       return res.status(401).json({ error: "Invalid email or password." });

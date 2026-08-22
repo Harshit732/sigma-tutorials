@@ -19,7 +19,12 @@
 .carouselRow {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
+  /* Deliberately outside .container (see Courses.js) so the cards can use
+     the full viewport width instead of losing space to the site's usual
+     24px side margins — just enough gutter here to keep the arrows and
+     card edges off the literal screen edge. */
+  padding: 0 10px;
 }
 
 .navBtn {

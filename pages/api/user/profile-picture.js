@@ -5,7 +5,7 @@ import { getTokenFromReq, verifyToken } from "@/lib/auth";
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: "4mb",
+      sizeLimit: "1mb",
     },
   },
 };
@@ -26,7 +26,10 @@ export default async function handler(req, res) {
   if (!image || typeof image !== "string" || !image.startsWith("data:image/")) {
     return res.status(400).json({ error: "A valid image is required." });
   }
-  if (image.length > 4 * 1024 * 1024) {
+  // Client compresses to ~250KB before upload; this is a generous backstop
+  // (base64 inflates ~33%, so ~350KB decoded) against anything that slips
+  // through uncompressed.
+  if (image.length > 500 * 1024) {
     return res.status(400).json({ error: "Image is too large. Please use a smaller photo." });
   }
 

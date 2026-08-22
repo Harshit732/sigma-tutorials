@@ -197,14 +197,15 @@ export default function Courses() {
             NLU.
           </p>
         </div>
+      </div>
 
-        <div className={styles.carouselRow}>
-          <button className={styles.navBtn} onClick={handlePrev} aria-label="Previous program">
-            ‹
-          </button>
+      <div className={styles.carouselRow}>
+        <button className={styles.navBtn} onClick={handlePrev} aria-label="Previous program">
+          ‹
+        </button>
 
-          <div className={styles.track} ref={trackRef}>
-            {LOOPED.map((program, i) => (
+        <div className={styles.track} ref={trackRef}>
+          {LOOPED.map((program, i) => (
               <div key={`${program.title}-${i}`} ref={(el) => (cardRefs.current[i] = el)} className={styles.slide}>
                 <div className={`${styles.flipCard} ${flipped.has(i) ? styles.flipped : ""}`}>
                   <div
@@ -261,6 +262,7 @@ export default function Courses() {
           </button>
         </div>
 
+      <div className="container">
         <div className={styles.moreRow}>
           <p>Not sure which pathway fits your prep stage?</p>
           <a href="#admissions" className="btn btn-primary">
