@@ -10,6 +10,19 @@
   margin-bottom: 28px;
 }
 
+.dashGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 24px;
+}
+
+@media (max-width: 980px) {
+  .dashGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .infoCard {
   max-width: 480px;
   padding: 10px 28px;

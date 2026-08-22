@@ -104,46 +104,48 @@ export default function Dashboard() {
         <h1>Welcome, {user.firstName}!</h1>
         <p className={styles.muted}>Here&apos;s the information on your account.</p>
 
-        <div className={`card ${styles.infoCard}`}>
-          <div className={styles.avatarRow}>
-            <div className={styles.avatarWrap}>
-              {user.profilePicture ? (
-                <img src={user.profilePicture} alt="Your profile" className={styles.avatarImg} />
-              ) : (
-                <span className={styles.avatarPlaceholder}>
-                  {user.firstName?.charAt(0)}
-                  {user.lastName?.charAt(0)}
-                </span>
-              )}
+        <div className={styles.dashGrid}>
+          <div className={`card ${styles.infoCard}`}>
+            <div className={styles.avatarRow}>
+              <div className={styles.avatarWrap}>
+                {user.profilePicture ? (
+                  <img src={user.profilePicture} alt="Your profile" className={styles.avatarImg} />
+                ) : (
+                  <span className={styles.avatarPlaceholder}>
+                    {user.firstName?.charAt(0)}
+                    {user.lastName?.charAt(0)}
+                  </span>
+                )}
+              </div>
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                >
+                  {uploading ? "Uploading…" : "Change Photo"}
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className={styles.hiddenInput}
+                />
+                {uploadError && <p className={styles.uploadError}>{uploadError}</p>}
+              </div>
             </div>
-            <div>
-              <button
-                type="button"
-                className="btn btn-outline"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
-              >
-                {uploading ? "Uploading…" : "Change Photo"}
-              </button>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className={styles.hiddenInput}
-              />
-              {uploadError && <p className={styles.uploadError}>{uploadError}</p>}
-            </div>
+
+            <Row label="First Name" value={user.firstName} />
+            <Row label="Last Name" value={user.lastName} />
+            <Row label="Email" value={user.email} />
+            <Row label="Phone Number" value={user.phone} />
+            <Row label="Date of Birth" value={dob} />
           </div>
 
-          <Row label="First Name" value={user.firstName} />
-          <Row label="Last Name" value={user.lastName} />
-          <Row label="Email" value={user.email} />
-          <Row label="Phone Number" value={user.phone} />
-          <Row label="Date of Birth" value={dob} />
+          <PackageTracker user={user} onSelectMock={handleSelectMock} />
         </div>
-
-        <PackageTracker user={user} onSelectMock={handleSelectMock} />
 
         {user.feedback && (
           <div className={`card ${styles.feedbackCard}`}>
